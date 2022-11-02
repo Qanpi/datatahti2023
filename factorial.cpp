@@ -1,6 +1,4 @@
 #include<iostream>
-#include<vector>
-#include<unordered_map>
 
 using namespace std;
 
@@ -21,33 +19,23 @@ int main() {
 		length += l;
 	}	
 
-	//vector<int> factorial;
-	//factorial.push_back(1);
 	factorial[0] = 1;
 
 	int i = 2;
 	int l = 1;
 	int carry = 0;
 	while(true) {
-//		if (i % 10 == 0) {
-//			for (int j=0; j<i/10; j++) l++; 
-//			check(l);
-//			carry = 0;
-//		}
-//		else {
-			for(int j=0; j<l; j++) {
-				int val = factorial[j] * i;
-				factorial[j] = (val+carry) % 10;
-				carry = (val+carry) / 10;
-			}
+		for(int j=0; j<l; j++) {
+			int val = factorial[j] * i;
+			factorial[j] = (val+carry) % 10;
+			carry = (val+carry) / 10;
+		}
 
-			while (carry > 0) {
-				l++;
-				factorial[l-1] = carry % 10;
-				//factorial.push_back(carry % 10);
-				carry /= 10;
-			}
-		//}
+		while (carry > 0) {
+			l++;
+			factorial[l-1] = carry % 10;
+			carry /= 10;
+		}
 
 		if(l == length && check(l)) break;
 		i++; 
@@ -57,7 +45,7 @@ int main() {
 }
 
 bool check(int l) {
-	unordered_map<int, int> count; 
+	int count[10] = {};
 
 	for(int i=0; i<l; i++) {
 		int d = factorial[i];
