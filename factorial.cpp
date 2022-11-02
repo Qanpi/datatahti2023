@@ -1,11 +1,14 @@
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
 int digits[10]; 
-int factorial[5*100000] = {0};
+int factorial[100000]; 
+int scale = 100000;
+int l = 1;
 
-bool check(int l);
+bool check();
 
 int main() {
 	cin.tie(0);
@@ -22,8 +25,6 @@ int main() {
 	factorial[0] = 1;
 
 	int i = 2;
-	int l = 1;
-	int scale = 100;
 	int carry = 0;
 	while(true) {
 		for(int j=0; j<l; j++) {
@@ -34,26 +35,31 @@ int main() {
 
 		while (carry > 0) {
 			l++;
-			factorial[l-1] = carry % scale;
+			factorial[l-1] = (carry % scale);
 			carry /= scale;
 		}
 
-		if(l > length/2 && check(l)) break;
+		if(l >= length/5 && check()) break;
 		i++; 
 	}
 	
 	cout << i << endl;
 }
 
-bool check(int l) {
+bool check() {
 	int count[10] = {};
 
 	for(int i=0; i<l; i++) {
-		int d = factorial[i];
-		cout << d << " ";
-		count[d]++;
+		int factor = factorial[i];
+
+		int added = 5;
+		while (factor > 0) {
+			count[factor%10]++;
+			factor /= 10;
+			added--;
+		}
+		if(i != l-1) count[0]+=added;
 	}
-	cout << endl;
 
 	for(int i=0; i<10; i++) {
 		if(digits[i] != count[i]) return false;
