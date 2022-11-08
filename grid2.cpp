@@ -8,7 +8,7 @@ int tab[1000][1000];
 int tab_temp[1000][1000];
 
 int main() {
-	freopen("grid1000.txt", "r", stdin);
+	//freopen("grid1000.txt", "r", stdin);
 	int n;
 	cin >> n;
 
@@ -26,11 +26,12 @@ int main() {
 //	int rows[100][1000] = {0};
 //	int cols[100][1000] = {0};
 
+	int calls = 0;
 	for (int x=1; x<=n*n; x++) {
-		if (x % 1000 == 0) cout << x << endl;
 		for(int i=0; i<n; i++) {
 			for (int j=0; j<n; j++) {
 				if (board[i][j] != x) continue;
+				calls++;
 				int val = 0;
 				for(int k=0; k<n; k++) {
 					val += tab[i][k];
@@ -64,6 +65,7 @@ int main() {
 	}
 
 	cout << sum << endl;
+	cout << calls << endl;
 	//combinations
 	//3
 	//3 -> 1
