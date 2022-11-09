@@ -1,7 +1,7 @@
 import random
 
 #n = random.randint(1, 1000)
-n = 100000 
+n = 15 
 
 with open(f"harvest{n}.txt", "w") as file:
     lst = [i for i in range(1, n+1)]

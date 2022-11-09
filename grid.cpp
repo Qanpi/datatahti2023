@@ -13,7 +13,6 @@ int n;
 int recurse(int x, int y); 
 int total_sum = 0;
 int recursive_calls = 0;
-int useless_calls = 0;
 
 int main() {
 	cin.tie(0);
@@ -41,13 +40,11 @@ int main() {
 		}
 	}
 
-			auto end = chrono::high_resolution_clock::now();
-			auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
-
 	cout << total_sum << endl;
 	cout << recursive_calls << endl;
-	cout << useless_calls << endl;
-	cout << duration.count() << endl;
+	//auto end = chrono::high_resolution_clock::now();
+	//auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
+	//cout << duration.count() << endl;
 
 }
 
@@ -67,7 +64,6 @@ int recurse(int x, int y) {
 		if (current > board[x][i]) {
 			sum += recurse(x, i);	
 		}
-		if (current <= board[i][y] && current <= board[x][i]) useless_calls++;
 	}
 
 	sum %= MOD;
