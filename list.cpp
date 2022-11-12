@@ -22,7 +22,7 @@ int main() {
 	for (int i=0; i<100; i++) {
 		cin >> sums[i];
 	}
-	test = 200;
+	test = 9;
 
 	solve();
 	//bool visited[range] = {};
@@ -36,20 +36,22 @@ void solve() {
 	//start.push_back({1});
 	solutions[0] = start;
 
+	int calls = 0;
 	for(int k=1; k<=range; k++) {
 		cout << k << endl;
 		for(int sum=test; sum>=0; sum--) {
+			calls++;
 			if (sum - k >= 0 && count[sum - k] > 0) {
 				count[sum] += count[sum - k];	
 				//cout << "sum: " << sum << " k: " << k << endl;
 
 				for (vector<int> s : solutions[sum - k]) {
-					if (s.size() > 23) continue;
+					if (s.size() > 43) continue;
 					vector<int> new_s = s;
 					new_s.push_back(k);
 
-					for (auto u : new_s) cout << u << " ";
-					cout << endl;
+					//for (auto u : new_s) cout << u << " ";
+					//cout << endl;
 					solutions[sum].push_back(new_s);
 				}
 				//firsts[sum].push_back(k);
@@ -57,6 +59,7 @@ void solve() {
 		}	
 	}
 	cout << count[test] << endl;
+	cout << calls << endl;
 	cout << endl;
 
 	for (auto s : solutions[test]) {

@@ -19,6 +19,7 @@ stack<pair<int, int>> topomemo;
 
 vector<pair<int, int>> adj[1000][1000];
 int paths[1000][1000];
+int calls = 0;
 
 void topo(int x, int y);
 
@@ -86,6 +87,7 @@ int main() {
 	cout << duration2.count() << endl;
 
 	cout << total_sum << endl;
+	cout << calls << endl;
 }
 
 void topo(int x, int y) {
@@ -96,12 +98,14 @@ void topo(int x, int y) {
 
 	for (int k=0; k<n; k++) {
 		if (board[x][y] >= board[x][k]) continue;
+		calls++;
 		topo(x, k);
 		adj[x][k].push_back({x, y});
 	}
 
 	for (int k=0; k<n; k++) {
 		if (board[x][y] >= board[k][y]) continue;
+		calls++;
 		topo(k, y);
 		adj[k][y].push_back({x, y});
 	}

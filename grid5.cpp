@@ -19,7 +19,7 @@ int recursive_calls = 0;
 
 int main() {
 	cin.tie(0);
-	//freopen("grid1000.txt", "r", stdin);
+	freopen("grid100.txt", "r", stdin);
 	//auto start = chrono::high_resolution_clock::now();
 	cin >> n;
 
@@ -49,7 +49,7 @@ int main() {
 	}
 
 	cout << total_sum << endl;
-	//cout << recursive_calls << endl;
+	cout << recursive_calls << endl;
 	//auto end = chrono::high_resolution_clock::now();
 	//auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
 	//cout << duration.count() << endl;
@@ -68,22 +68,23 @@ int recurse(int i, int j) {
 	auto y_bound = lower_bound(sorted_rows[i], sorted_rows[i]+n, key) - sorted_rows[i];
 
 	//cout << "bounds: " << current << " " << x_bound << " " << y_bound << endl;
+	recursive_calls++;
 	for(int y=y_bound-1; y>=0; y--) {
 		int next_y = sorted_rows[i][y].second; 
 		//cout << "next x move: " << current << " " << next_y << " " << j << endl;
 		sum += recurse(i, next_y); 
+		sum %= MOD;
 	}
-	sum %= MOD;
 
 	for(int x=x_bound-1; x>=0; x--) {
 		int next_x = sorted_cols[j][x].second; 
 		//cout << current << " " << i << " " << next_y << endl;
 		sum += recurse(next_x, j); 
+		sum %= MOD;
 	}
 
 	//cout << endl;
 
-	sum %= MOD;
 	memo[i][j] = sum;
 	ready[i][j] = true;
 	return sum;
