@@ -13,7 +13,7 @@ const int INF = 10e7;
 int djikstra(int x);
  
 int main() {
-	freopen("harvest15.txt", "r", stdin);
+	freopen("harvest10.txt", "r", stdin);
 	cin.tie(0);
 	cin >> n;
  

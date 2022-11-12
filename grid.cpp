@@ -42,9 +42,9 @@ int main() {
 
 	cout << total_sum << endl;
 	cout << recursive_calls << endl;
-	//auto end = chrono::high_resolution_clock::now();
-	//auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
-	//cout << duration.count() << endl;
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
+	cout << duration.count() << endl;
 
 }
 

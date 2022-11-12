@@ -1,5 +1,5 @@
 import random
-n = 100
+n = 15
 
 with open(f"grid{n}.txt", "w") as file:
     file.write(str(n) + "\n")
