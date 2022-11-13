@@ -1,5 +1,5 @@
 #include<iostream>
-#include<chrono>
+//#include<chrono>
 #include<algorithm>
 
 using namespace std;
@@ -13,10 +13,10 @@ int total_sum;
 pair<int, int> sorted_rows[1000][1000];
 pair<int, int> sorted_cols[1000][1000];
 
-int memo[1000][1000];
-bool ready[1000][1000];
+int tree_rows[1000][1000];
+int tree_cols[1000][1000];
 
-int recurse(int i, int j); 
+void recurse(int i, int j); 
 int recursive_calls = 0;
 
 int main() {
@@ -34,7 +34,7 @@ int main() {
 		}
 	}
 
-	auto start = chrono::high_resolution_clock::now();
+	//auto start = chrono::high_resolution_clock::now();
 	for(int i=0; i<n; i++) {
 		sort(sorted_rows[i], sorted_rows[i]+n);
 		sort(sorted_cols[i], sorted_cols[i]+n);
@@ -42,30 +42,69 @@ int main() {
 
 
 	//for future, maybe somehow sort the rows and cols and go from there
-	long long int total_sum = 0;
 	for (int i=0; i<n; i++) {
 		for (int j=0; j<n; j++) {
-			total_sum += recurse(i, j);
+			recurse(i, j);
 		}
 	}
 
-	auto end = chrono::high_resolution_clock::now();
-	auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
+	//auto end = chrono::high_resolution_clock::now();
+	//auto duration = chrono::duration_cast<chrono::microseconds>(end-start);
 
 	cout << total_sum << endl;
-	cout << "calls: " << recursive_calls << endl;
-	cout << "dur: " << duration.count() << endl;
+	//cout << "calls: " << recursive_calls << endl;
+	//cout << "dur: " << duration.count() << endl;
 }
 
-int recurse(int i, int j) {
-	if (ready[i][j]) return memo[i][j];
-	ready[i][j] = true;
+int sum_rows(int i, int k) {
+	int s = 0;
+	while (k >= 1) {
+		s += tree_rows[i][k];
+		s %= MOD;
+		k -= k&-k;
+	}
+	return s;
+}
+
+int sum_cols(int j, int k) {
+	int s = 0;
+	while (k >= 1) {
+		s += tree_cols[j][k];
+		s %= MOD;
+		k -= k&-k;
+	}
+	return s;
+}
+
+void add_rows(int i, int k, int x) {
+	while(k <= n) {
+		tree_rows[i][k] += x;
+		tree_rows[i][k] %= MOD;
+		k += k&-k;
+	}
+}
+
+void add_cols(int j, int k, int x) {
+	while(k <= n) {
+		tree_cols[j][k] += x;
+		tree_cols[j][k] %= MOD;
+		k += k&-k;
+	}
+}
+void recurse(int i, int j) {
+	if (visited[i][j]) return;
+	visited[i][j] = true;
 
 	int current = board[i][j];
 	pair<int, int> key = {current, 0};
 	auto x_hi = lower_bound(sorted_rows[i], sorted_rows[i]+n, key) - sorted_rows[i];
 	auto y_hi = lower_bound(sorted_cols[j], sorted_cols[j]+n, key) - sorted_cols[j];
 
+	//if (x_hi == 0 && y_hi == 0) {
+	//	add(tree_rows[i], 1, 1);
+	//	add(tree_cols[j], 1, 1);
+	//	return;
+	//}
 	//cout << current << " " << x_hi << " " << y_hi << endl;
 	//cout << sorted_rows[i][x_hi-1].first << endl; 
 	//cout << sorted_cols[j][y_hi-1].first << endl;
@@ -75,24 +114,30 @@ int recurse(int i, int j) {
 	auto x_low = lower_bound(sorted_rows[i], sorted_rows[i]+n, x_key) - sorted_rows[i]; 
 	auto y_low = lower_bound(sorted_cols[j], sorted_cols[j]+n, y_key) - sorted_cols[j]; 
 
-	int sum = 1;
-	for(int x = 0; x<x_hi; x++) {
+
+	for(int x = x_low; x<x_hi; x++) {
 		recursive_calls++;
 		int next = sorted_rows[i][x].second;
 		//cout << current << " next x: " << next << endl;
-		sum += recurse(i, next);
+		recurse(i, next);
 	}
 
-	for(int y = 0; y<y_hi; y++) {
+	for(int y = y_low; y<y_hi; y++) {
 		recursive_calls++;
 		int next = sorted_cols[j][y].second;
 		//cout << current << " next y: " << next << endl;
-		sum += recurse(next, j);
+		recurse(next, j);
 	}
+
+	int x_sum = sum_rows(i, x_hi);
+	int y_sum = sum_cols(j, y_hi);
+	int sum = (x_sum + y_sum) % MOD + 1;
+
+	add_rows(i, x_hi + 1, sum);
+	add_cols(j, y_hi + 1, sum);
 	
-	//cout << current << ": " << sum << endl;
-	memo[i][j] = sum;
-	return sum;
+	total_sum += sum;
+	total_sum %= MOD;
 //	cout << x_hi << " " << y_hi << endl;
 //
 //	int x_sum = memo_rows[i][x_hi-1];

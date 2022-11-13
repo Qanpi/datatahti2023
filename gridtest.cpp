@@ -11,7 +11,7 @@ int n;
 int recurse(int x, int y); 
  
 int main() {
-	freopen("grid5.txt", "r", stdin);
+	freopen("grid100.txt", "r", stdin);
 	cin >> n;
  
 	for (int i=0; i<n; i++) {

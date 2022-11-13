@@ -38,7 +38,7 @@ void solve() {
 
 	int calls = 0;
 	for(int k=1; k<=range; k++) {
-		cout << k << endl;
+		//cout << k << endl;
 		for(int sum=test; sum>=0; sum--) {
 			calls++;
 			if (sum - k >= 0 && count[sum - k] > 0) {
@@ -61,6 +61,9 @@ void solve() {
 	cout << count[test] << endl;
 	cout << calls << endl;
 	cout << endl;
+
+	//for (int c : count) cout << c << endl;
+	//return;
 
 	for (auto s : solutions[test]) {
 		for (auto u : s) cout << u << " ";
